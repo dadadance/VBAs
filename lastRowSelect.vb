@@ -1,4 +1,4 @@
-Sub lastRowSub()
+Sub lastRowSub() 'gamarjoba
 Dim wkR As Worksheet
 Set wkR = Sheets("summary")
     wkR.Select
