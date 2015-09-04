@@ -1,0 +1,48 @@
+Sub extractD()
+	
+	Dim Rng As Range
+	Dim dtRng As Range
+	Dim c As Integer, cc As Integer, r As Integer, rr As Integer, r1 As Integer, c1 As Integer
+	Dim kell As Range
+	Dim NextRow As Integer, i As Integer
+	
+	Range("b2").UnMerge
+	Range("b5").Offset(, 1).Select
+	
+	r1 = Range("b5").Offset(, 1).Row
+	c1 = Range("b5").Offset(, 1).Column
+	
+	r = Range(Selection, Selection.End(xlDown)).Count - 1
+	Range("b5").Select
+	
+	c = Range(Selection, Selection.End(xlToRight)).Count
+	
+	Set dtRng = Range(Cells(r1, c1), Cells(4 + r, c + 1))
+	dtRng.Select
+	
+	For rr = 1 To r
+		
+		For cc = 1 To c Step 2
+			
+			dtRng(rr, cc).Select
+			
+			If dtRng(rr, cc) <> "" Then
+				
+				NextRow = Cells(Rows.Count, "b").End(xlUp).Row + 1
+				
+'mun
+				Cells(NextRow, 2) = Cells(ActiveCell.Row, 2)
+'prod
+				Cells(NextRow, 3) = Cells(3, ActiveCell.Column)
+'area
+				Cells(NextRow, 4) = dtRng(rr, cc)
+'projected
+				Cells(NextRow, 5) = dtRng(rr, cc + 1)
+				
+			End If
+			
+			Next cc
+			
+			Next rr
+		End Sub
+		
