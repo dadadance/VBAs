@@ -1,0 +1,63 @@
+Sub annuals()
+
+If Cells(1, 2) = "Village" Then
+    MsgBox "Done"
+    Exit Sub
+End If
+
+Dim tableColsCount As Integer
+Cells.ClearFormats
+tableColsCount = ActiveSheet.ListObjects(1).ListColumns.Count
+Cells(, tableColsCount).EntireColumn.Delete
+Cells(, tableColsCount - 1).EntireColumn.Delete
+tableColsCount = ActiveSheet.ListObjects(1).ListColumns.Count
+
+Dim i As Integer, x As Integer
+Dim tepmName As String
+x = 3
+
+Do While x <= tableColsCount
+    Cells(1, x).Select
+    tempName = Cells(1, x)
+
+    Cells(1, x) = tempName & "|" & Cells(2, x)
+    Cells(1, x + 1) = tempName & "|" & Cells(2, x + 1)
+    Cells(1, x + 2) = tempName & "|" & Cells(2, x + 2)
+    x = x + 3
+Loop
+
+Cells(2).EntireRow.Delete
+Cells(1, 2) = "Village"
+
+ActiveSheet.ListObjects(1).DataBodyRange.Select
+Selection.Replace What:="", Replacement:="0"
+
+Dim tbl As ListObject
+Set tbl = ActiveSheet.ListObjects(1)
+
+    tbl.ListColumns.Add Position:=3
+    
+    With tbl.ListColumns(3).DataBodyRange
+        .FormulaR1C1 = "=TRIM([@Village])"
+        .Copy
+        tbl.ListColumns(2).DataBodyRange.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        Application.CutCopyMode = False
+        
+        .FormulaR1C1 = "=CLEAN([@Village])"
+        .Copy
+        tbl.ListColumns(2).DataBodyRange.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+        Application.CutCopyMode = False
+        .Delete
+    End With
+      
+Dim recordsK As Integer
+Dim newSet() As Variant
+
+recordsK = ActiveSheet.ListObjects(1).ListColumns(2).DataBodyRange.Count
+tableColsCount = tableColsCount - 2
+
+
+
+End Sub
