@@ -1,0 +1,18 @@
+Function LastRowColumn(sht As Worksheet, RowColumn As String) As Long
+'PURPOSE: Function To Return the Last Row Or Column Number In the Active Spreadsheet
+'INPUT: "R" or "C" to determine which direction to search
+
+Dim rc As Long
+
+Select Case LCase(Left(RowColumn, 1)) 'If they put in 'row' or column instead of 'r' or 'c'.
+  Case "c"
+    LastRowColumn = sht.Cells.Find("*", LookIn:=xlFormulas, SearchOrder:=xlByColumns, _
+    SearchDirection:=xlPrevious).Column
+  Case "r"
+    LastRowColumn = sht.Cells.Find("*", LookIn:=xlFormulas, SearchOrder:=xlByRows, _
+    SearchDirection:=xlPrevious).Row
+  Case Else
+    LastRowColumn = 1
+End Select
+
+End Function
