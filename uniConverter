@@ -1,0 +1,46 @@
+Function uniConvert(a As Variant)
+
+Dim arrK() As Variant, arrL() As Variant, tempA() As Variant, tempB() As Variant
+Dim geoA() As Variant, engA() As Variant, engGeoA() As Variant
+
+geoA = Array(4304, 4305, 4306, 4307, 4308, 4309, 4310, 4311, 4312, 4313, 4314, 4315, 4316, 4317, 4318, 4319, 4320, 4321, 4322, 4323, 4324, 4325, 4326, 4327, 4328, 4329, 4330, 4331, 4332, 4333, 4334, 4335, 4336)
+engGeoA = Array("a", "b", "g", "d", "e", "v", "z", "T", "i", "k", "l", "m", "n", "o", "p", "J", "r", "s", "t", "u", "f", "q", "R", "y", "S", "C", "c", "Z", "w", "W", "x", "j", "h")
+engA = Array("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z")
+
+'    'eng alphabet or unicode numbers or geo alphabet for index2
+'    If WorksheetFunction.Unicode(a) >= 4304 Or _
+'       WorksheetFunction.Unicode(a) <= 4336 Then
+'        Debug.Print "Georgian incoming!"
+'        'columnSwitch = 1
+'        tempA = geoA
+'        tempB = engA
+'    Else
+'        Debug.Print "English, Sir!"
+'        'columnSwitch = 3
+'        tempA = engA
+'        tempB = geoA
+'    End If
+'
+    'split string and add it to array by characters
+    'we use i-1 counter for Mid function that can't work with 0 posiotin of a character
+    ReDim Preserve arrK(0 To Len(a) - 1)
+    For i = 1 To UBound(arrK) + 1
+        arrK(i - 1) = Mid$(a, i, 1)
+    Next i
+        
+    'combine translated characters into new array
+    Dim k As Integer, arrKLen As Integer
+    k = 0
+    ReDim Preserve arrL(0 To UBound(arrK))
+        
+        arrKLen = UBound(arrK)
+        For i = 1 To UBound(arrK) + 1
+            arrL(i - 1) = WorksheetFunction.Index(engGeoA, _
+                          WorksheetFunction.Match _
+                         (WorksheetFunction.Unicode(arrK(i - 1)), geoA, 0))
+        Next i
+        
+        newEngTxt = Join(arrL, "")
+        uniConvert = newEngTxt
+
+End Function
